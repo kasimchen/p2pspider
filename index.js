@@ -68,7 +68,7 @@ p2p.on('metadata', function (metadata) {
             // set
             client.sismember("infohash", metadata.infohash, function(error, res) {
 
-                console.log(res);
+                //console.log(res);
 
             });
         }
