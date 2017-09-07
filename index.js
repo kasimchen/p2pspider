@@ -23,6 +23,7 @@ p2p.ignore(function (infohash, rinfo, callback) {
 
 p2p.on('metadata', function (metadata) {
 
+    /*
     var redis = require("redis"),
         client = redis.createClient(6379,"127.0.0.1",{});
 
@@ -39,15 +40,18 @@ p2p.on('metadata', function (metadata) {
                 }
 
                 // 关闭链接
-                //client.end();
+                client.end();
             });
         }
-    });
-    /*
+    });*/
+
     var array_file_parent = {};
     array_file_parent.name = metadata.info.name.toString();
     array_file_parent.length = metadata.info.length;
-    console.log(array_file_parent);
+    array_file_parent.infohash = metadata.infohash;
+
+
+    array_file_parent.file = Array();
 
     if(metadata.info.files!=undefined) {
 
@@ -56,18 +60,20 @@ p2p.on('metadata', function (metadata) {
             var array_file = {};
             array_file.name = str;
             array_file.length = metadata.info.files[i].length;
-            console.log(array_file);
+            array_file_parent.file.push(array_file);
         }
-    }*/
+    }
 
+    console.log(array_file_parent);
 
+    /*
     var torrentFilePathSaveTo = path.join(__dirname, "torrents", metadata.infohash + ".torrent");
     fs.writeFile(torrentFilePathSaveTo, bencode.encode({'info': metadata.info}), function(err) {
         if (err) {
             return console.error(err);
         }
         console.log(metadata.infohash + ".torrent has saved.");
-    });
+    });*/
 });
 
 p2p.listen(6881, '0.0.0.0');
