@@ -24,7 +24,7 @@ p2p.ignore(function (infohash, rinfo, callback) {
 p2p.on('metadata', function (metadata) {
 
     var redis = require("redis"),
-        client = redis.createClient(6380,"127.0.0.1",{});
+        client = redis.createClient(6379,"127.0.0.1",{});
 
     client.select('5', function(error){
         if(error) {
