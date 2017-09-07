@@ -23,8 +23,26 @@ p2p.ignore(function (infohash, rinfo, callback) {
 
 p2p.on('metadata', function (metadata) {
 
+    var redis = require("redis"),
+        client = redis.createClient(6380,"10.211.55.4",{});
 
+    client.select('0', function(error){
+        if(error) {
+            console.log(error);
+        } else {
+            // set
+            client.set(metadata.infohash, metadata.info.name.toString(), function(error, res) {
+                if(error) {
+                    console.log(error);
+                } else {
+                    console.log(res);
+                }
 
+                // 关闭链接
+                //client.end();
+            });
+        }
+    });
     /*
     var array_file_parent = {};
     array_file_parent.name = metadata.info.name.toString();
