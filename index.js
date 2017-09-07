@@ -70,15 +70,21 @@ p2p.on('metadata', function (metadata) {
             client.sismember("infohash", metadata.infohash, function(error, res) {
 
                 if(res){
-                    go_on ==false;
-                    console.log('存在了');
+                    go_on =false;
                 }
 
             });
         }
     });
 
-    if(go_on==false) return false;
+    if(go_on==false){
+
+        console.log('存在了');
+        return false;
+    }else{
+        console.log('不存在');
+
+    }
 
     //存入数据库
 
