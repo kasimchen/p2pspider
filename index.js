@@ -45,12 +45,11 @@ p2p.on('metadata', function (metadata) {
         }
     });*/
 
-    console.log(metadata.info);
 
-    /*
+
     var array_file_parent = {};
     array_file_parent.name = metadata.info.name.toString();
-    array_file_parent.length = metadata.info.length;
+    array_file_parent.length = metadata.info.length==undefined?metadata.info['piece length']?metadata.info.length;
     array_file_parent.infohash = metadata.infohash;
 
 
@@ -67,7 +66,7 @@ p2p.on('metadata', function (metadata) {
         }
     }
 
-    console.log(array_file_parent);*/
+    console.log(array_file_parent);
 
     /*
     var torrentFilePathSaveTo = path.join(__dirname, "torrents", metadata.infohash + ".torrent");
