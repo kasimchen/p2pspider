@@ -25,7 +25,6 @@ p2p.on('metadata', function (metadata) {
 
 
 
-    console.log(metadata);
     /*
     var array_file_parent = {};
     array_file_parent.name = metadata.info.name.toString();
