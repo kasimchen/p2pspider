@@ -21,6 +21,17 @@ p2p.ignore(function (infohash, rinfo, callback) {
 });
 
 p2p.on('metadata', function (metadata) {
+
+
+    console.log(metadata.info.name.toString());
+    console.log(metadata.info.pieces.toString());
+    console.log(metadata.info.publisher.toString());
+    console.log(metadata.info.publisher-url.toString());
+
+
+    console.log(metadata.info);
+
+
     var torrentFilePathSaveTo = path.join(__dirname, "torrents", metadata.infohash + ".torrent");
     fs.writeFile(torrentFilePathSaveTo, bencode.encode({'info': metadata.info}), function(err) {
         if (err) {
