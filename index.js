@@ -24,8 +24,7 @@ p2p.on('metadata', function (metadata) {
 
 
     console.log(metadata.info.name.toString());
-    console.log(metadata.info.pieces.toString());
-    console.log(metadata.info);
+    console.log(metadata.info.files);
 
 
     var torrentFilePathSaveTo = path.join(__dirname, "torrents", metadata.infohash + ".torrent");
