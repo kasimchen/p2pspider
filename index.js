@@ -15,11 +15,6 @@ var p2p = P2PSpider({
 
 p2p.ignore(function (infohash, rinfo, callback) {
 
-
-    console.log(infohash);
-    console.log(rinfo);
-
-
     var torrentFilePathSaveTo = path.join(__dirname, "torrents", infohash + ".torrent");
     fs.exists(torrentFilePathSaveTo, function(exists) {
         callback(exists); //if is not exists, download the metadata.
