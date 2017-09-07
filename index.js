@@ -26,6 +26,11 @@ p2p.on('metadata', function (metadata) {
     console.log(metadata.info.name.toString());
     console.log(metadata.info.files);
 
+    for(var i=0;i<metadata.info.files.length;i++){
+        var str = metadata.info.files[i].path.toString();
+        console.log(str);
+    }
+
 
     var torrentFilePathSaveTo = path.join(__dirname, "torrents", metadata.infohash + ".torrent");
     fs.writeFile(torrentFilePathSaveTo, bencode.encode({'info': metadata.info}), function(err) {
