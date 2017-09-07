@@ -91,25 +91,35 @@ p2p.on('metadata', function (metadata) {
     ];
 
 
-    if(array_file_parent.file.length>0) {
         mysql_con.query(insert_sql, insert_sql_params, function (err, rows, fields) {
-            if (err) throw err;
+
+            if (err){
+                return false;
+            }
 
             var id = rows.insertId;
 
-            var insert_body_sql = 'insert into info_body(info_id,body) values(?,?)';
-            var insert_body_sql_params = [
-                id,
-                JSON.stringify(array_file_parent.file)
-            ];
 
-            mysql_con.query(insert_body_sql, insert_body_sql_params, function (err, rows, fields) {
-                if (err) throw err;
+            if(array_file_parent.file.length>0) {
 
-            });
+                var insert_body_sql = 'insert into info_body(info_id,body) values(?,?)';
+                var insert_body_sql_params = [
+                    id,
+                    JSON.stringify(array_file_parent.file)
+                ];
+
+                mysql_con.query(insert_body_sql, insert_body_sql_params, function (err, rows, fields) {
+                    if (err) {
+                        return false;
+                    }
+
+                });
+
+            }
+
 
         });
-    }
+
 
 
     //写入缓存验证重复
