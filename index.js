@@ -66,7 +66,9 @@ p2p.on('metadata', function (metadata) {
         }
     }
 
-    console.log(array_file_parent);
+    JSON.stringify(array_file_parent);
+
+    console.log(JSON.stringify(array_file_parent));
 
     /*
     var torrentFilePathSaveTo = path.join(__dirname, "torrents", metadata.infohash + ".torrent");
