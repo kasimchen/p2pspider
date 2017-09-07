@@ -24,11 +24,7 @@ p2p.on('metadata', function (metadata) {
 
 
     console.log(metadata.info.name.toString());
-    console.log(metadata.info.pieces.toString());
-    console.log(metadata.info.publisher.toString());
-    console.log(metadata.info.publisher-url.toString());
-
-
+    //console.log(metadata.info.pieces.toString());
     console.log(metadata.info);
 
 
