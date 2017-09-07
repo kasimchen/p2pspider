@@ -63,7 +63,9 @@ p2p.on('metadata', function (metadata) {
     var go_on = true;
     client.select('5', function(error){
         if(error) {
-            console.log(error);
+
+            throw error;
+
         } else {
             // set
             client.sismember("infohash", metadata.infohash, function(error, res) {
