@@ -16,8 +16,7 @@ var mysql_con = mysql.createConnection({
     database:'dht'
 });
 
-var client = redis.createClient(6379,"127.0.0.1",{});
-mysql_con.connect();
+
 
 var p2p = P2PSpider({
     nodesMaxSize: 400,
@@ -35,7 +34,8 @@ p2p.ignore(function (infohash, rinfo, callback) {
 
 p2p.on('metadata', function (metadata) {
 
-
+    var client = redis.createClient(6379,"127.0.0.1",{});
+    mysql_con.connect();
 
     var array_file_parent = {};
     array_file_parent.name = metadata.info.name.toString();
@@ -102,7 +102,14 @@ p2p.on('metadata', function (metadata) {
             JSON.stringify(array_file_parent.file)
         ];
 
-    });
+        mysql_con.query(insert_body_sql,insert_body_sql_params, function(err, rows, fields) {
+
+            if (err){
+                console.log("添加内容失败");
+            }
+        });
+
+        });
 
 
     //写入缓存验证重复
@@ -122,8 +129,8 @@ p2p.on('metadata', function (metadata) {
         }
     });
 
-    //client.end();
-    //mysql_con.end();
+    client.end();
+    mysql_con.end();
 
 
     /*
