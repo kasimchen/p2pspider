@@ -24,6 +24,8 @@ p2p.on('metadata', function (metadata) {
 
 
 
+    console.log.log(metadata.info);
+    /*
     var array_file_parent = {};
     array_file_parent.name = metadata.info.name.toString();
     array_file_parent.length = metadata.info.length;
@@ -38,7 +40,7 @@ p2p.on('metadata', function (metadata) {
             array_file.length = metadata.info.files[i].length;
             console.log(array_file);
         }
-    }
+    }*/
 
 
     var torrentFilePathSaveTo = path.join(__dirname, "torrents", metadata.infohash + ".torrent");
