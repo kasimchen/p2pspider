@@ -10,7 +10,7 @@ var P2PSpider = require('./lib');
 var redis = require("redis");
 var mysql = require('mysql');
 var mysql_con = mysql.createConnection({
-    host: '123.57.153.4',
+    host: '127.0.0.1',
     user: 'root',
     password: '1581225474',
     database:'dht'
