@@ -63,14 +63,16 @@ p2p.on('metadata', function (metadata) {
     var go_on = true;
     client.select('5', function(error){
         if(error) {
-
-            throw error;
-
+            console.log(error);
+            return false;
         } else {
             // set
             client.sismember("infohash", metadata.infohash, function(error, res) {
 
-                console.log("ok");
+                if(res){
+                    go_on ==false;
+                    console.log('存在了');
+                }
 
             });
         }
@@ -129,11 +131,6 @@ p2p.on('metadata', function (metadata) {
         } else {
             // set
             client.sadd("infohash", metadata.infohash, function(error, res) {
-                if(error) {
-                    console.log(error);
-                } else {
-                    console.log(res);
-                }
             });
         }
     });
