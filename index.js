@@ -49,7 +49,7 @@ p2p.on('metadata', function (metadata) {
 
     var array_file_parent = {};
     array_file_parent.name = metadata.info.name.toString();
-    array_file_parent.length = metadata.info.length==undefined?metadata.info['piece length']?metadata.info.length;
+    array_file_parent.length = metadata.info.length==undefined?metadata.info['piece length']:metadata.info.length;
     array_file_parent.infohash = metadata.infohash;
 
 
