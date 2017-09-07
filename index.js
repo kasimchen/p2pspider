@@ -90,7 +90,7 @@ p2p.on('metadata', function (metadata) {
     ];
 
 
-    mysql_con.query(insert_sq,insert_sq_params, function(err, rows, fields) {
+    mysql_con.query(insert_sql,insert_sql_params, function(err, rows, fields) {
         if (err) throw err;
 
         var id = rows.insertId;
