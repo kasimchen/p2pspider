@@ -67,12 +67,9 @@ p2p.on('metadata', function (metadata) {
         } else {
             // set
             client.sismember("infohash", metadata.infohash, function(error, res) {
-                if(error) {
-                    console.log(error);
-                } else {
-                    console.log(res);
-                    go_on = false;
-                }
+
+                console.log(res);
+
             });
         }
     });
