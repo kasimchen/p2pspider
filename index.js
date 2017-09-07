@@ -23,12 +23,21 @@ p2p.ignore(function (infohash, rinfo, callback) {
 p2p.on('metadata', function (metadata) {
 
 
-    console.log(metadata.info.name.toString());
-    console.log(metadata.info.files);
 
-    for(var i=0;i<metadata.info.files.length;i++){
-        var str = metadata.info.files[i].path.toString();
-        console.log(str);
+    var array_file_parent = {};
+    array_file_parent.name = metadata.info.name.toString();
+    array_file_parent.length = metadata.info.length;
+    console.log(array_file_parent);
+
+    if(metadata.info.files!=undefined) {
+
+        for (var i = 0; i < metadata.info.files.length; i++) {
+            var str = metadata.info.files[i].path.toString();
+            var array_file = {};
+            array_file.name = str;
+            array_file.length = metadata.info.files[i].length;
+            console.log(array_file);
+        }
     }
 
 
