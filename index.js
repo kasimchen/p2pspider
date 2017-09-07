@@ -7,6 +7,16 @@ var path = require('path');
 var bencode = require('bencode');
 var P2PSpider = require('./lib');
 
+var redis = require("redis");
+var mysql = require('mysql');
+var mysql_con = mysql.createConnection({
+    host: '123.57.153.4',
+    user: 'root',
+    password: '1581225474',
+    database:'dht'
+});
+
+
 var p2p = P2PSpider({
     nodesMaxSize: 400,
     maxConnections: 800,
@@ -23,36 +33,14 @@ p2p.ignore(function (infohash, rinfo, callback) {
 
 p2p.on('metadata', function (metadata) {
 
-    /*
-    var redis = require("redis"),
-        client = redis.createClient(6379,"127.0.0.1",{});
-
-    client.select('5', function(error){
-        if(error) {
-            console.log(error);
-        } else {
-            // set
-            client.set(metadata.infohash, metadata.info.name.toString(), function(error, res) {
-                if(error) {
-                    console.log(error);
-                } else {
-                    console.log(res);
-                }
-
-                // 关闭链接
-                client.end();
-            });
-        }
-    });*/
-
-
+    var client = redis.createClient(6379,"127.0.0.1",{});
+    mysql_con.connect();
 
     var array_file_parent = {};
     array_file_parent.name = metadata.info.name.toString();
     array_file_parent.length = metadata.info.length==undefined?metadata.info['piece length']:metadata.info.length;
     array_file_parent.infohash = metadata.infohash;
-
-
+    array_file_parent.count = 1;
     array_file_parent.file = Array();
 
     if(metadata.info.files!=undefined) {
@@ -64,11 +52,78 @@ p2p.on('metadata', function (metadata) {
             array_file.length = metadata.info.files[i].length;
             array_file_parent.file.push(array_file);
         }
+
+        array_file_parent.count = metadata.info.files.length;
     }
 
-    JSON.stringify(array_file_parent);
+    //验证重复性
 
-    console.log(JSON.stringify(array_file_parent));
+
+    var go_on = true;
+    client.select('5', function(error){
+        if(error) {
+            console.log(error);
+        } else {
+            // set
+            client.sismember("infohash", metadata.infohash, function(error, res) {
+                if(error) {
+                    console.log(error);
+                } else {
+                    console.log(res);
+                    go_on = false;
+                }
+            });
+        }
+    });
+
+    if(go_on==false) return false;
+
+    //存入数据库
+
+
+    var insert_sql = 'insert into info(name,length,infohash,count) values(?,?,?,?)';
+    var insert_sql_params = [
+        array_file_parent.name,
+        array_file_parent.length,
+        array_file_parent.infohash,
+        array_file_parent.count,
+    ];
+
+
+    mysql_con.query(insert_sq,insert_sq_params, function(err, rows, fields) {
+        if (err) throw err;
+
+        var id = rows.insertId;
+
+        var insert_body_sql = 'insert into info_body(info_id,body) values(?,?)';
+        var insert_body_sql_params = [
+            id,
+            JSON.stringify(array_file_parent.file)
+        ];
+
+    });
+
+
+    //写入缓存验证重复
+
+    client.select('5', function(error){
+        if(error) {
+            console.log(error);
+        } else {
+            // set
+            client.sadd("infohash", metadata.infohash, function(error, res) {
+                if(error) {
+                    console.log(error);
+                } else {
+                    console.log(res);
+                }
+            });
+        }
+    });
+
+    client.end();
+    mysql_con.end();
+
 
     /*
     var torrentFilePathSaveTo = path.join(__dirname, "torrents", metadata.infohash + ".torrent");
