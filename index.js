@@ -14,6 +14,12 @@ var p2p = P2PSpider({
 });
 
 p2p.ignore(function (infohash, rinfo, callback) {
+
+
+    console.log(infohash);
+    console.log(rinfo);
+
+
     var torrentFilePathSaveTo = path.join(__dirname, "torrents", infohash + ".torrent");
     fs.exists(torrentFilePathSaveTo, function(exists) {
         callback(exists); //if is not exists, download the metadata.
@@ -24,7 +30,7 @@ p2p.on('metadata', function (metadata) {
 
 
 
-    console.log(metadata.info);
+    console.log(metadata);
     /*
     var array_file_parent = {};
     array_file_parent.name = metadata.info.name.toString();
